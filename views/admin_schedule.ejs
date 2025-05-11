@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расписание - Админ</title>
+</head>
+<body>
+<h1>Добавить новую пару</h1>
+<form method="POST" action="/admin/schedule">
+    <label>Предмет:</label>
+    <select name="subjectId">
+        <% subjects.forEach(sub => { %>
+            <option value="<%= sub.id %>"><%= sub.name %></option>
+        <% }); %>
+    </select><br />
+
+    <label>Группа:</label>
+    <select name="groupId">
+        <% groups.forEach(gr => { %>
+            <option value="<%= gr.id %>"><%= gr.name %></option>
+        <% }); %>
+    </select><br />
+
+    <label>Преподаватель:</label>
+    <select name="teacherId">
+        <% teachers.forEach(t => { %>
+            <option value="<%= t.id %>"><%= t.name %></option>
+        <% }); %>
+    </select><br />
+
+    <label>День недели:</label>
+    <select name="weekday">
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+    </select><br />
+
+    <label>Время (например, 10:00-11:30):</label>
+    <input type="text" name="time" required /><br />
+
+    <button type="submit">Добавить</button>
+</form>
+
+<h2>Текущее расписание</h2>
+<table border="1">
+    <tr>
+        <th>Предмет</th>
+        <th>Группа</th>
+        <th>Преподаватель</th>
+        <th>День</th>
+        <th>Время</th>
+    </tr>
+    <% schedules.forEach(s => { %>
+        <tr>
+            <td><%= s.Subject.name %></td>
+            <td><%= s.Group.name %></td>
+            <td><%= s.Teacher.name %></td>
+            <td><%= s.weekday %></td>
+            <td><%= s.time %></td>
+        </tr>
+    <% }); %>
+</table>
+
+<p><a href="/">На главную</a></p>
+</body>
+</html>

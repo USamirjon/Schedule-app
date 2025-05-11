@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Регистрация</title></head>
+<body>
+<h2>Регистрация</h2>
+<form method="POST" action="/register">
+    <input name="username" placeholder="Логин" required /><br />
+    <input name="password" type="password" placeholder="Пароль" required /><br />
+    <select name="role">
+        <option value="student">Студент</option>
+        <option value="teacher">Преподаватель</option>
+        <option value="admin">Администратор</option>
+    </select><br />
+    <button type="submit">Зарегистрироваться</button>
+</form>
+</body>
+</html>

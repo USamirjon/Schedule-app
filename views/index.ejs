@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Главная</title></head>
+<body>
+<h1>Добро пожаловать</h1>
+<% if (typeof user !== 'undefined') { %>
+    <p>Вы вошли как <%= user.username %> (<%= user.role %>)</p>
+    <a href="/logout">Выход</a>
+<% } else { %>
+    <a href="/login">Вход</a> | <a href="/register">Регистрация</a>
+<% } %>
+</body>
+</html>
