@@ -1,28 +1,36 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Teacher = require('./Teacher');
+
 const Subject = require('./Subject');
 const Group = require('./Group');
+const Teacher = require('./Teacher');
 
 const Schedule = sequelize.define('Schedule', {
     weekday: {
-        type: DataTypes.ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     time: {
-        type: DataTypes.STRING, // например: "08:30-10:00"
-        allowNull: false
-    }
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    subjectId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    teacherId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
 });
 
-// Связи
-Teacher.hasMany(Schedule);
-Schedule.belongsTo(Teacher);
-
-Subject.hasMany(Schedule);
-Schedule.belongsTo(Subject);
-
-Group.hasMany(Schedule);
-Schedule.belongsTo(Group);
+// Associations
+Schedule.belongsTo(Subject, { foreignKey: 'subjectId' });
+Schedule.belongsTo(Group, { foreignKey: 'groupId' });
+Schedule.belongsTo(Teacher, { foreignKey: 'teacherId' });
 
 module.exports = Schedule;

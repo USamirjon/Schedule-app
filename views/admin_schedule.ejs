@@ -2,49 +2,99 @@
 <html>
 <head>
     <title>Расписание - Админ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
 <h1>Добавить новую пару</h1>
-<form method="POST" action="/admin/schedule">
-    <label>Предмет:</label>
-    <select name="subjectId">
+<form method="POST" action="/admin/schedule" id="schedule-form">
+    <label for="subjectId">Предмет:</label>
+    <select name="subjectId" id="subjectId" required>
+        <option value="">Выберите предмет</option>
         <% subjects.forEach(sub => { %>
             <option value="<%= sub.id %>"><%= sub.name %></option>
         <% }); %>
     </select><br />
 
-    <label>Группа:</label>
-    <select name="groupId">
+    <label for="groupId">Группа:</label>
+    <select name="groupId" id="groupId" required>
+        <option value="">Выберите группу</option>
         <% groups.forEach(gr => { %>
             <option value="<%= gr.id %>"><%= gr.name %></option>
         <% }); %>
     </select><br />
 
-    <label>Преподаватель:</label>
-    <select name="teacherId">
+    <label for="teacherId">Преподаватель:</label>
+    <select name="teacherId" id="teacherId" required>
+        <option value="">Выберите преподавателя</option>
         <% teachers.forEach(t => { %>
             <option value="<%= t.id %>"><%= t.name %></option>
         <% }); %>
     </select><br />
 
-    <label>День недели:</label>
-    <select name="weekday">
-        <option>Monday</option>
-        <option>Tuesday</option>
-        <option>Wednesday</option>
-        <option>Thursday</option>
-        <option>Friday</option>
-        <option>Saturday</option>
+    <label for="weekday">День недели:</label>
+    <select name="weekday" id="weekday" required>
+        <option value="">Выберите день</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
     </select><br />
 
-    <label>Время (например, 10:00-11:30):</label>
-    <input type="text" name="time" required /><br />
+    <label for="time">Время (например, 10:00-11:30):</label>
+    <input type="text" name="time" id="time" required /><br />
 
     <button type="submit">Добавить</button>
 </form>
 
 <h2>Текущее расписание</h2>
-<table border="1">
+<table>
     <tr>
         <th>Предмет</th>
         <th>Группа</th>
@@ -54,9 +104,9 @@
     </tr>
     <% schedules.forEach(s => { %>
         <tr>
-            <td><%= s.Subject.name %></td>
-            <td><%= s.Group.name %></td>
-            <td><%= s.Teacher.name %></td>
+            <td><%= s.Subject ? s.Subject.name : 'Не задано' %></td>
+            <td><%= s.Group ? s.Group.name : 'Не задано' %></td>
+            <td><%= s.Teacher ? s.Teacher.name : 'Не задано' %></td>
             <td><%= s.weekday %></td>
             <td><%= s.time %></td>
         </tr>
@@ -64,5 +114,31 @@
 </table>
 
 <p><a href="/">На главную</a></p>
+
+<script>
+    // Client-side validation script
+    document.getElementById('schedule-form').addEventListener('submit', function(event) {
+        const subjectId = document.getElementById('subjectId').value;
+        const groupId = document.getElementById('groupId').value;
+        const teacherId = document.getElementById('teacherId').value;
+        const weekday = document.getElementById('weekday').value;
+        const time = document.getElementById('time').value;
+
+        // Log values to console for debugging
+        console.log('Form submission values:', {
+            subjectId,
+            groupId,
+            teacherId,
+            weekday,
+            time
+        });
+
+        // Check if any required fields are empty
+        if (!subjectId || !groupId || !teacherId || !weekday || !time) {
+            event.preventDefault();
+            alert('Пожалуйста, заполните все поля формы');
+        }
+    });
+</script>
 </body>
 </html>
